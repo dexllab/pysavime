@@ -1,0 +1,63 @@
+import os
+
+from setuptools import setup
+from setuptools.extension import Extension
+from Cython.Build import cythonize
+
+SAVIME_INCLUDE_ENV = 'SAVIME_INCLUDE'
+SAVIME_LIB_ENV = 'SAVIME_LIB'
+
+DEFAULT_SAVIME_LIB = '/usr/local/savime/lib'
+DEFAULT_SAVIME_INCLUDE = '/usr/local/savime/include/lib'
+
+SAVIME_INCLUDE = None
+SAVIME_LIB = None
+
+
+def check_savime_install():
+    global SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, SAVIME_LIB, SAVIME_LIB_ENV
+
+    def assign_value(variable, default_value, environment_variable, var_name):
+        if os.path.exists(default_value):
+            variable = default_value
+
+        if os.environ.get(environment_variable) is not None:
+            variable = os.environ.get(environment_variable)
+
+        type_ = 'include' if 'include' in var_name.lower() else 'lib'
+
+        if variable is None:
+            raise Exception(f'You should set the {type_} directory through the environment variable {var_name}.')
+
+        return variable
+
+    SAVIME_INCLUDE = assign_value(SAVIME_INCLUDE, DEFAULT_SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, 'SAVIME_INCLUDE')
+    SAVIME_LIB = assign_value(SAVIME_LIB, DEFAULT_SAVIME_LIB, SAVIME_LIB_ENV, 'SAVIME_LIB')
+
+
+os.environ[SAVIME_INCLUDE_ENV] = '/media/daniel/Data/git/savime/lib'
+os.environ[SAVIME_LIB_ENV] = '/opt/savime/lib'
+check_savime_install()
+
+
+extensions = [
+    Extension('client', ['savime/client.pyx'],
+              include_dirs=[SAVIME_INCLUDE],
+              libraries=['savime'],
+              library_dirs=[SAVIME_LIB],
+              language='c++'),
+    Extension('datatype', ['savime/datatype.pyx'],
+              include_dirs=[SAVIME_INCLUDE],
+              libraries=['savime'],
+              library_dirs=[SAVIME_LIB],
+              language='c++'),
+]
+
+setup(ext_modules=cythonize(extensions,
+                            compiler_directives={'language_level': "3"},
+                            build_dir='build'))
+
+client_path = 'client.cpython-37m-x86_64-linux-gnu.so'
+datatype_path = 'datatype.cpython-37m-x86_64-linux-gnu.so'
+os.rename(client_path, os.path.join('savime', client_path))
+os.rename(datatype_path, os.path.join('savime', datatype_path))

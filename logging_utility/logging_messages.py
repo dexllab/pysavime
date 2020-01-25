@@ -1,0 +1,17 @@
+CONN_OPEN_TRY = 'Trying to open a connection on the port {}.'
+CONN_OPEN_SUCCESSFUL = 'A connection has been opened on the port {}.'
+CONN_OPEN_ALREADY = 'The connection is already open on the port {}.'
+CONN_OPEN_UNSUCCESSFUL = 'Could not open a connection on the port {}'
+
+CONN_CLOSE_TRY = 'Trying to close a connection on the port {}.'
+CONN_CLOSE_SUCCESSFUL = 'A connection has been closed on the port {}.'
+CONN_CLOSE_ALREADY = 'No connection is opened on the port {}.'
+CONN_CLOSE_UNSUCCESSFUL = 'Could not close a connection on the port {}.'
+
+CLIENT_QUERY_RUN = 'Running the query {}.'
+CLIENT_QUERY_HANDLER_RESPONSE = 'Query handler response message: {}'
+CLIENT_READ_QUERY_BLOCK = 'Read query block returned: {}.'
+CLIENT_DATA_FRAME_YIELD = 'Yielding a data frame with {} rows.'
+CLIENT_DVBLOCK_RETURN = 'Returning an array with {} rows.'
+CLIENT_RECEIVE_DATA_BUFFER_TRY = 'Trying to receive a buffer with {} bytes.'
+CLIENT_MMAP_FAILURE = 'Memory mapping failure.'
