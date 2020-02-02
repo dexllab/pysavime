@@ -8,7 +8,7 @@ SAVIME_INCLUDE_ENV = 'SAVIME_INCLUDE'
 SAVIME_LIB_ENV = 'SAVIME_LIB'
 
 DEFAULT_SAVIME_LIB = '/usr/local/savime/lib'
-DEFAULT_SAVIME_INCLUDE = '/usr/local/savime/include/lib'
+DEFAULT_SAVIME_INCLUDE = 'include/'
 
 SAVIME_INCLUDE = None
 SAVIME_LIB = None
@@ -17,26 +17,24 @@ SAVIME_LIB = None
 def check_savime_install():
     global SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, SAVIME_LIB, SAVIME_LIB_ENV
 
-    def assign_value(variable, default_value, environment_variable, var_name):
+    def assign_value(variable, default_value, environment_variable):
         if os.path.exists(default_value):
             variable = default_value
 
         if os.environ.get(environment_variable) is not None:
             variable = os.environ.get(environment_variable)
 
-        type_ = 'include' if 'include' in var_name.lower() else 'lib'
+        type_ = 'include' if 'include' in environment_variable.lower() else 'lib'
 
         if variable is None:
-            raise Exception(f'You should set the {type_} directory through the environment variable {var_name}.')
+            raise Exception(f'You should set the {type_} directory through the environment variable {environment_variable}.')
 
         return variable
 
-    SAVIME_INCLUDE = assign_value(SAVIME_INCLUDE, DEFAULT_SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, 'SAVIME_INCLUDE')
-    SAVIME_LIB = assign_value(SAVIME_LIB, DEFAULT_SAVIME_LIB, SAVIME_LIB_ENV, 'SAVIME_LIB')
+    SAVIME_INCLUDE = assign_value(SAVIME_INCLUDE, DEFAULT_SAVIME_INCLUDE, SAVIME_INCLUDE_ENV)
+    SAVIME_LIB = assign_value(SAVIME_LIB, DEFAULT_SAVIME_LIB, SAVIME_LIB_ENV)
 
 
-os.environ[SAVIME_INCLUDE_ENV] = '/media/daniel/Data/git/savime/lib'
-os.environ[SAVIME_LIB_ENV] = '/opt/savime/lib'
 check_savime_install()
 
 

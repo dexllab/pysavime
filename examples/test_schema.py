@@ -235,7 +235,7 @@ with Client(port=savime_port, host=savime_host) as client:
     for subtar_ in subtars:
         print_response_as_xarray(command_runner.load(subtar_))
 
-    from test.queries import queries
+    from examples.queries import queries
 
     for query in queries:
         print_response_as_xarray(command_runner.execute(query))
