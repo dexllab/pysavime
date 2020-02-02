@@ -1,6 +1,6 @@
 # PySavime
 
-This code repository is a initiative for allowing Python code to directly 
+This code repository is an initiative for allowing Python code to directly 
 communicate with SAVIME server. The code is far from being
 complete and is not yet in a mature stage to be called a
 library. Nevertheless, its API allows to perform queries
