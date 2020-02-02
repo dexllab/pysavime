@@ -3,7 +3,7 @@
 This code repository is an initiative for allowing Python code to directly 
 communicate with SAVIME server. The code is far from being
 complete and is not yet in a mature stage to be called a
-library. Nevertheless, its API allows to perform queries
+library. Nevertheless, using its API one is able to perform queries
 in and receive data from SAVIME. 
 
 To use this API you have to perform the following steps:
