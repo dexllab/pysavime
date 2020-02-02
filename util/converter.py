@@ -1,5 +1,6 @@
 from abc import ABC
 from collections import OrderedDict
+import itertools
 import numpy as np
 import os
 import pandas as pd
@@ -130,21 +131,19 @@ class DataVariableBlockToPandasDataFrame(DataVariableBlockConverterABC):
         for attr_name, attr_array in data_variable_block.attrs.items():
             num_columns = 1 if len(attr_array.shape) == 1 else attr_array.shape[-1]
             if num_columns == 1:
-                attr_array.shape = (attr_array.shape[0],)
+                attr_array.shape = (attr_array.shape[0], 1)
                 attr_columns.append(attr_array)
                 attr_names.append(attr_name)
             else:
                 attr_columns_multi_index = True
-                for i, array in enumerate(np.hsplit(attr_array, attr_array.shape[-1])):
-                    array.shape = (array.shape[0],)
-                    attr_columns.append(array)
-                    attr_names.append((attr_name, i))
+                attr_columns.append(attr_array)
+                num_columns = attr_array.shape[-1]
+                attr_name_with_column_indices = list(zip(itertools.repeat(attr_name, num_columns), range(num_columns)))
+                attr_names.extend(attr_name_with_column_indices)
 
         dim_columns = self.dim_columns_to_index(dim_names, dim_columns)
         attr_names = self.attr_names_to_index(attr_names, attr_columns_multi_index)
-
-        data_frame = pd.DataFrame.from_dict(dict(zip(attr_names, attr_columns)))
-        data_frame.set_index(dim_columns, inplace=True)
+        data_frame = pd.DataFrame(np.hstack(attr_columns), index=dim_columns, columns=attr_names)
 
         return data_frame
 
@@ -188,10 +187,10 @@ class DataVariableBlockToXarrayDataset(DataVariableBlockConverterABC):
 
         for attr_name, attr_array in data_variable_block.attrs.items():
             attr_mapped_index_arrays = mapped_index_arrays
-            attr_dense_shape = shape
-            attr_index_arrays = index_arrays
-            attr_coord_and_index_array_names = coord_and_index_array_names
-            attr_coord_arrays = coord_arrays
+            attr_dense_shape = shape[:]
+            attr_index_arrays = index_arrays[:]
+            attr_coord_and_index_array_names = coord_and_index_array_names[:]
+            attr_coord_arrays = coord_arrays[:]
 
             if is_a_matrix(attr_array):
                 attr_dense_shape += [attr_array.shape[1]]
