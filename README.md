@@ -14,7 +14,7 @@ to create a new virtual environment based on `requirements.txt`.
 2. Install SAVIME on your machine.
 3. In a terminal, assign the directory containing the SAVIME library (`libsavime.a`)
 to the bash variable `SAVIME_LIB` and export it.
-4. Run the command: `libsavime.a`.
+4. In a terminal (in this dir), run the command: `python setup.py build_ext --inplace`.
 
 If the compilation ran accordingly, you should be able to use
 the code in this repository. This repository is organized as 
