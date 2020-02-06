@@ -117,7 +117,7 @@ class Range(SavimeElement):
         return q
 
 
-class IntervalRange:
+class IntervalRange(ReprMixIn):
     """
     Defines an interval range.
 
@@ -139,9 +139,9 @@ class IntervalRange:
         self.step = step
 
 
-class IndexRange:
+class IndexRange(ReprMixIn):
     """
-    Defines a continuous index range. Note it just defines the boundaries of the interval and has nothing to the
+    Defines a continuous index range. Note that it just defines the boundaries of the interval and has nothing to do with the
     manner the values are spaced within the interval.
 
     Examples:

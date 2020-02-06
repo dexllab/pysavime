@@ -55,7 +55,12 @@ setup(ext_modules=cythonize(extensions,
                             compiler_directives={'language_level': "3"},
                             build_dir='build'))
 
-client_path = 'client.cpython-37m-x86_64-linux-gnu.so'
-datatype_path = 'datatype.cpython-37m-x86_64-linux-gnu.so'
-os.rename(client_path, os.path.join('savime', client_path))
-os.rename(datatype_path, os.path.join('savime', datatype_path))
+
+def find_lib_and_move_to_dir(start_strings, dir_path):
+    for elem in os.listdir('.'):
+        for start_string in start_strings:
+            if os.path.isfile(elem) and elem.startswith(start_string):
+                os.rename(elem, os.path.join(dir_path, elem))
+
+
+find_lib_and_move_to_dir([extension.name for extension in extensions], 'savime')
