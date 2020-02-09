@@ -150,8 +150,7 @@ class Tar(CreatableSavimeElement):
     """
 
     def __init__(self, name: str,
-                 dimension_specification: Sequence[Union[ImplicitTarDimensionSpecification,
-                                                         ExplicitTarDimensionSpecification]],
+                 dimension_specification: Sequence[TarDimensionSpecification],
                  attribute_specification: Sequence[TarAttributeSpecification],
                  meta_type: Union[str, TarMetaType] = None,
                  meta_type_mapping: dict = None):
@@ -168,7 +167,7 @@ class Tar(CreatableSavimeElement):
 
     def plain_query_str(self) -> str:
         q = f'"{self.name}", "{self.meta_type_query_str}", "{self.dimension_specification_str}", ' \
-            f'"{self.attribute_specification_str}" {self.mapping_query_str} '
+            f'"{self.attribute_specification_str}"{self.mapping_query_str}'
         return q
 
     @property

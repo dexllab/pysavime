@@ -21,7 +21,7 @@ def example():
         dataset_a_name = 'dataset_A'
         dataset_b_name = 'dataset_B'
         command_runner.execute('SELECT(joy);')
-        command_runner.predict(tar='tar2', model_name='model', target_attribute='a')
+        command_runner.predict(tar='tar2', model_name='model', input_attribute='a')
 
         command_runner.drop_tar(tar_name)
         command_runner.drop_dataset(dataset_a_name)

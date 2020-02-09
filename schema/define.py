@@ -1,24 +1,43 @@
-from schema.tar import Tar, ImplicitTarDimensionSpecification, TarAttributeSpecification
-from schema.schema import IntervalRange, IndexRange
-from schema.dataset import FileDataset
-from schema.subtar import OrderedSubTarDimensionSpecification, SubTarAttributeSpecification, SubTar
+from schema.dataset import *
+from schema.subtar import *
 
 
-def implicit_tar_dimension(name: str, data_type, start, stop, step=1) -> ImplicitTarDimensionSpecification:
+def _to_savime_supported_type(input_data_type):
+
+    if not isinstance(input_data_type, SavimeSupportedTypes):
+
+        try:
+            input_data_type = input_data_type.upper()
+            output_data_type = SavimeSupportedTypes.__members__[input_data_type]
+        except KeyError:
+            print(f'SAVIME does not support the "{input_data_type}" data type. Please choose one among '
+                  f'{list(SavimeSupportedTypes.__members__.keys())}')
+            raise
+    else:
+        output_data_type = input_data_type
+
+    return output_data_type
+
+
+def implicit_tar_dimension(name: str, data_type: Union[str, SavimeSupportedTypes],
+                           start, stop, step=1) -> ImplicitTarDimensionSpecification:
     """
 
-    :param name:
-    :param data_type:
-    :param start:
-    :param stop:
-    :param step:
-    :return:
+    :param name: The implicit tar dimension name.
+    :param data_type: The data type associated to this dimension.
+    :param start: The first element in this dimension.
+    :param stop: The last element in this dimension.
+    :param step: The distance between two consecutive elements in this dimension.
+    :return: The schema for a implicit tar dimension.
     """
 
-    return ImplicitTarDimensionSpecification(name, data_type, IntervalRange(start, stop, step))
+    checked_data_type = _to_savime_supported_type(data_type)
+    return ImplicitTarDimensionSpecification(name, checked_data_type, IntervalRange(start, stop, step))
 
 
-def tar(name, dimensions, attributes) -> Tar:
+def tar(name: str, dimensions: Sequence[TarDimensionSpecification],
+        attributes: Sequence[TarAttributeSpecification]) -> Tar:
+
     """
 
     :param name:
@@ -30,7 +49,7 @@ def tar(name, dimensions, attributes) -> Tar:
     return Tar(name, dimensions, attributes)
 
 
-def tar_attribute(name: str, data_type, length) -> TarAttributeSpecification:
+def tar_attribute(name: str, data_type: Union[str, SavimeSupportedTypes], length=1) -> TarAttributeSpecification:
     """
 
     :param name:
@@ -39,10 +58,12 @@ def tar_attribute(name: str, data_type, length) -> TarAttributeSpecification:
     :return:
     """
 
-    return TarAttributeSpecification(name, data_type, length)
+    checked_data_type = _to_savime_supported_type(data_type)
+    return TarAttributeSpecification(name, checked_data_type, length)
 
 
-def ordered_subtar_dimension(dimension, start, stop, is_physical=False) -> OrderedSubTarDimensionSpecification:
+def ordered_subtar_dimension(dimension: TarDimensionSpecification, start, stop, is_physical=False) \
+        -> OrderedSubTarDimensionSpecification:
     """
 
     :param dimension:
@@ -55,7 +76,7 @@ def ordered_subtar_dimension(dimension, start, stop, is_physical=False) -> Order
     return OrderedSubTarDimensionSpecification(dimension, IndexRange(start, stop, is_physical))
 
 
-def subtar_attribute(attribute, dataset) -> SubTarAttributeSpecification:
+def subtar_attribute(attribute: TarAttributeSpecification, dataset: Dataset) -> SubTarAttributeSpecification:
     """
 
     :param attribute:
@@ -65,7 +86,8 @@ def subtar_attribute(attribute, dataset) -> SubTarAttributeSpecification:
     return SubTarAttributeSpecification(attribute, dataset)
 
 
-def subtar(tar, dimensions, attributes) -> SubTar:
+def subtar(tar: Tar, dimensions: Sequence[SubTarDimensionSpecification],
+           attributes: Sequence[SubTarAttributeSpecification]) -> SubTar:
     """
 
     :param tar:
@@ -76,5 +98,7 @@ def subtar(tar, dimensions, attributes) -> SubTar:
     return SubTar(tar, dimensions, attributes)
 
 
-def file_dataset(name, path, data_type, is_in_savime_storage=False) -> FileDataset:
-    return FileDataset(name=name, file_path=path, data_type=data_type, is_in_savime_storage=is_in_savime_storage)
+def file_dataset(name: str, path: str, data_type, is_in_savime_storage=False, length: int = 1) -> FileDataset:
+    checked_data_type = _to_savime_supported_type(data_type)
+    return FileDataset(name=name, file_path=path, data_type=checked_data_type,
+                       is_in_savime_storage=is_in_savime_storage, num_columns=length)
