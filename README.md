@@ -13,7 +13,7 @@ To use this API you have to perform the following steps:
 to create a new virtual environment based on `requirements.txt`.
 2. Install [SAVIME](https://hllustosa.github.io/Savime/) on your machine.
 3. In a terminal, assign the directory containing the SAVIME library (`libsavime.a`)
-to the bash variable `SAVIME_LIB` and export it. If you've not changed the default install location while building SAVIME, the library should in `/usr/local/savime/lib`.
+to the bash variable `SAVIME_LIB` and export it. If you've not changed the default install location while building SAVIME, the library should be in `/usr/local/savime/lib`.
 4. In a terminal (in this dir), run the command: `python setup.py build_ext --inplace`.
 
 If the compilation ran accordingly, you should be able to use
