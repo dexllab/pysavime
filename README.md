@@ -11,7 +11,7 @@ To use this API you have to perform the following steps:
 1. Install the following dependencies `cython`, `numpy`, `pandas`, 
 `sortedcontainers` and `xarray`. This installation can be easily accomplished by using conda
 to create a new virtual environment based on `requirements.txt`.
-2. Install SAVIME on your machine.
+2. Install [SAVIME](https://hllustosa.github.io/Savime/) on your machine.
 3. In a terminal, assign the directory containing the SAVIME library (`libsavime.a`)
 to the bash variable `SAVIME_LIB` and export it.
 4. In a terminal (in this dir), run the command: `python setup.py build_ext --inplace`.
