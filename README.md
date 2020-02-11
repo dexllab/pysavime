@@ -9,7 +9,7 @@ in and receive data from SAVIME.
 To use this API you have to perform the following steps:
 
 1. Install the following dependencies `cython`, `numpy`, `pandas`, 
-`sortedcontainers` and `xarray`. This can be easily accomplished by using conda
+`sortedcontainers` and `xarray`. This installation can be easily accomplished by using conda
 to create a new virtual environment based on `requirements.txt`.
 2. Install SAVIME on your machine.
 3. In a terminal, assign the directory containing the SAVIME library (`libsavime.a`)
