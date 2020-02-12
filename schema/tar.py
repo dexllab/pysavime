@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import Sequence, Union
 
 from savime.datatype import SavimeSupportedTypes
+from schema.dataset import Dataset
 from schema.schema import CreatableSavimeElement, IntervalRange, SavimeElement
 
 
@@ -114,7 +115,7 @@ class ExplicitTarDimensionSpecification(TarDimensionSpecification):
         dataset: A dataset or its name.
     """
 
-    def __init__(self, name: str, dataset: str):
+    def __init__(self, name: str, dataset: Union[str, Dataset]):
         super().__init__(name)
         self.dataset = dataset
         self._dataset_name = dataset if isinstance(dataset, str) else dataset.name

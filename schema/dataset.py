@@ -1,8 +1,8 @@
 from savime.datatype import SavimeSupportedTypes
-from schema.schema import CreatableSavimeElement, Literal, Range
+from schema.schema import CreatableSavimeElement, DroppableSavimeElement, Literal, Range
 
 
-class Dataset(CreatableSavimeElement):
+class Dataset(CreatableSavimeElement, DroppableSavimeElement):
     """
     Defines an abstract interface for a dataset. In Savime a dataset is a contiguous array of primitive data type
     elements. In particular, Savime supports the definition of one and two rank arrays. Only the children of this
@@ -28,6 +28,10 @@ class Dataset(CreatableSavimeElement):
 
     def create_query_str(self):
         q = f'CREATE_DATASET({self.plain_query_str()});'
+        return q
+
+    def drop_query_str(self):
+        q = f'DROP_DATASET("{self.name}");'
         return q
 
 

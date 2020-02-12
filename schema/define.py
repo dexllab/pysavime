@@ -1,5 +1,6 @@
 from schema.dataset import *
 from schema.subtar import *
+from schema.tar import *
 
 
 def _to_savime_supported_type(input_data_type):
@@ -22,6 +23,7 @@ def _to_savime_supported_type(input_data_type):
 def implicit_tar_dimension(name: str, data_type: Union[str, SavimeSupportedTypes],
                            start, stop, step=1) -> ImplicitTarDimensionSpecification:
     """
+    Create a implicit tar dimension specification.
 
     :param name: The implicit tar dimension name.
     :param data_type: The data type associated to this dimension.
@@ -35,15 +37,37 @@ def implicit_tar_dimension(name: str, data_type: Union[str, SavimeSupportedTypes
     return ImplicitTarDimensionSpecification(name, checked_data_type, IntervalRange(start, stop, step))
 
 
+def explicit_tar_dimension(name: str, dataset: [str, Dataset]):
+    """
+
+    :param name:
+    :param dataset:
+    :return:
+    """
+    return ExplicitTarDimensionSpecification(name, dataset)
+
+
+def tar_metatype(name: str, dimension_names: Sequence[str], attribute_names: Sequence[str]):
+    """
+
+    :param name:
+    :param dimension_names:
+    :param attribute_names:
+    :return:
+    """
+
+    return TarMetaType(name, dimension_names, attribute_names)
+
+
 def tar(name: str, dimensions: Sequence[TarDimensionSpecification],
         attributes: Sequence[TarAttributeSpecification]) -> Tar:
 
     """
 
-    :param name:
-    :param dimensions:
-    :param attributes:
-    :return:
+    :param name: The tar name.
+    :param dimensions: The dimension specifications.
+    :param attributes: The attribute specifications.
+    :return: The tar schema specification.
     """
 
     return Tar(name, dimensions, attributes)

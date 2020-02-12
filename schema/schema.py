@@ -47,6 +47,21 @@ class CreatableSavimeElement(SavimeElement):
         pass
 
 
+class DroppableSavimeElement(SavimeElement):
+    """
+    Interface for SAVIME droppable elements: tars, types, and datasets.
+    """
+
+    @abstractmethod
+    def drop_query_str(self) -> str:
+        """
+        Interface for DROP queries. The returned query must be runnable.
+
+        :return: A DROP query.
+        """
+        pass
+
+
 class LoadableSavimeElement(SavimeElement):
     """
     Interface for SAVIME loadable elements, e.g., subtars.
