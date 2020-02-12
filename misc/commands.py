@@ -57,8 +57,12 @@ def predict(tar: str, model_name: str, input_attribute: str):
 
 def select(tar: Union[Tar, str], *data_elements):
     tar_name = _get_tar_name(tar)
-    data_elements_str = ', '.join([data_element for data_element in data_elements])
-    query = f'SELECT({tar_name}, {data_elements_str})'
+
+    if len(data_elements) > 1:
+        data_elements_str = ', '.join([data_element for data_element in data_elements])
+        query = f'SELECT({tar_name}, {data_elements_str})'
+    else:
+        query = f'SELECT({tar_name})'
     return query
 
 
