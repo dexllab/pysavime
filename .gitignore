@@ -1,2 +1,4 @@
 /build/
 .idea
+/savime/client.cpython-37m-x86_64-linux-gnu.so
+/savime/datatype.cpython-37m-x86_64-linux-gnu.so
