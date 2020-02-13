@@ -15,14 +15,14 @@ SAVIME_LIB = None
 
 
 def check_savime_install():
-    global SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, SAVIME_LIB, SAVIME_LIB_ENV
+    global SAVIME_INCLUDE, SAVIME_INCLUDE_ENV, SAVIME_LIB, SAVIME_LIB_ENV, DEFAULT_SAVIME_INCLUDE, DEFAULT_SAVIME_LIB
 
     def assign_value(variable, default_value, environment_variable):
-        if os.path.exists(default_value):
-            variable = default_value
-
         if os.environ.get(environment_variable) is not None:
             variable = os.environ.get(environment_variable)
+
+        elif os.path.exists(default_value):
+            variable = default_value
 
         type_ = 'include' if 'include' in environment_variable.lower() else 'lib'
 
