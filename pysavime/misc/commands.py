@@ -23,12 +23,12 @@ def _get_dataset_name(dataset):
 def _split_into_n(sequence: Sequence, n: int):
     assert len(sequence) % n == 0
     for i in range(0, len(sequence), n):
-        t = [sequence[j] for j in range(i, i + n + 1)]
+        t = [sequence[j] for j in range(i, i + n)]
         yield tuple(t)
 
 
 def _sequence_to_str(t):
-    return ', '.join(ti for ti in t)
+    return ', '.join(str(ti) for ti in t)
 
 
 def create(savime_element: CreatableSavimeElement):
@@ -121,7 +121,8 @@ def subset(tar, *dims):
     :param dims:
     :return:
     """
-    dims_str = ', '.join([_sequence_to_str(dim) for dim in _split_into_n(dims, 2)])
+
+    dims_str = ', '.join([_sequence_to_str(dim) for dim in _split_into_n(dims, 3)])
     tar_name = _get_tar_name(tar)
     query = f'SUBSET({tar_name}, {dims_str})'
     return query
