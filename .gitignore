@@ -1,7 +1,6 @@
 /build/
 .idea
-/pysavime/savime/client.cpython-37m-x86_64-linux-gnu.so
-/pysavime/savime/datatype.cpython-37m-x86_64-linux-gnu.so
+/pysavime/savime/client.cpython*
+/pysavime/savime/datatype.cpython*
 /pysavime.egg-info/
 /dist/
-/pysavime/_examples/

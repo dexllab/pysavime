@@ -52,7 +52,7 @@ extensions = [
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-requirements = ['sortedcontainers>=2.1.0', 'Cython>=0.29.14', 'numpy>=1.17.3', 'pandas>=0.25.3', 'xarray>=0.14.1']
+requirements = ['sortedcontainers>=2.1.0', 'Cython>=0.29.0', 'numpy>=1.17.0', 'pandas>=0.25.0', 'xarray>=0.14.1']
 classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License",
                "Operating System :: Linux"]
 
