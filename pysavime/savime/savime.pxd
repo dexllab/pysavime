@@ -6,7 +6,6 @@ from libcpp cimport bool
 
 
 cdef extern from 'savime_lib.h':
-
     enum SavimeEnumType:
         SAV_CHAR
         SAV_INT8
@@ -25,10 +24,10 @@ cdef extern from 'savime_lib.h':
         SavimeEnumType type
         int length
         inline SavimeType& operator=(SavimeEnumType)
-        inline bool operator==(SavimeEnumType)
-        inline bool operator!=(SavimeEnumType)
-        inline bool operator==(SavimeType)
-        inline bool operator!=(SavimeType)
+        inline bool operator ==(SavimeEnumType)
+        inline bool operator !=(SavimeEnumType)
+        inline bool operator ==(SavimeType)
+        inline bool operator !=(SavimeType)
 
     cdef cppclass SavimeDataElement:
         string name
@@ -36,7 +35,7 @@ cdef extern from 'savime_lib.h':
         SavimeType type
 
     cdef struct QueryResultHandle:
-        char* response_text
+        char*response_text
         bool is_schema
         bool successful
         map[string, int] descriptors
@@ -54,11 +53,11 @@ cdef extern from 'savime_lib.h':
         string status()
 
     SavimeConn open_connection(int, const char*) except +
-    void close_connection(SavimeConn&) except +
-    QueryResultHandle execute(SavimeConn&, const char*) except +
-    int read_query_block(SavimeConn&, QueryResultHandle&) except +
-    void dispose_query_handle(QueryResultHandle&) except +
-    void shutdown_savime(SavimeConn&) except+
+    void close_connection(SavimeConn &) except +
+    QueryResultHandle execute(SavimeConn &, const char*) except +
+    int read_query_block(SavimeConn &, QueryResultHandle &) except +
+    void dispose_query_handle(QueryResultHandle &) except +
+    void shutdown_savime(SavimeConn &) except+
 
     cdef int SAV_FAILURE
     cdef int SAV_SUCCESS

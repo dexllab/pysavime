@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 from collections import OrderedDict
 import itertools
 import numpy as np
@@ -7,21 +7,20 @@ import pandas as pd
 from sortedcontainers import SortedDict
 import xarray as xr
 
-from util.data_variable import DataVariableBlock
-from misc.decorators import timer_decorator
+from pysavime.util.data_variable import DataVariableBlock
+from pysavime.misc.decorators import timer_decorator
 
-from schema.tar import *
-from schema.dataset import *
-from savime.datatype import SavimeDataTypeUtility
-from savime.client import Client
-from config import *
+from pysavime.schema.tar import *
+from pysavime.schema.dataset import *
+from pysavime.savime.datatype import SavimeDataTypeUtility
+from pysavime.savime.client import Client
+from pysavime.config import *
 
 
 # TODO: Strings
 def numpy_array_to_savime_dataset(array: np.array, client: Client, dataset_name: str,
                                   dataset_dir_path: str = DEFAULT_SAVIME_STORAGE_DIR_PATH,
                                   savime_storage_dir_path: str = DEFAULT_SAVIME_STORAGE_DIR_PATH):
-
     assert SavimeDataTypeUtility.is_array_compatible(array)
     dataset_file_path = os.path.join(dataset_dir_path, dataset_name)
     array.tofile(dataset_file_path)
@@ -31,7 +30,6 @@ def numpy_array_to_savime_dataset(array: np.array, client: Client, dataset_name:
     num_columns = 1 if len(array.shape) else array.shape[-1]
     dataset = FileDataset(name=dataset_name, data_type=SavimeDataTypeUtility.numpy_to_savime_query(array.dtype),
                           file_path=dataset_file_path, is_in_savime_storage=is_in_savime_storage, dimension=num_columns)
-    client.create(dataset)
 
     return dataset
 

@@ -1,8 +1,8 @@
 from typing import List, Sequence, Tuple, Union
 
-from schema.schema import CreatableSavimeElement, DroppableSavimeElement, LoadableSavimeElement
-from schema.tar import Tar
-from schema.dataset import Dataset
+from pysavime.schema.schema import CreatableSavimeElement, DroppableSavimeElement, LoadableSavimeElement
+from pysavime.schema.tar import Tar
+from pysavime.schema.dataset import Dataset
 
 
 def _get_name_of_named_element(element, element_class):
@@ -196,4 +196,3 @@ def store(query, new_tar_name):
     """
     query = f'STORE({query}, "{new_tar_name}")'
     return query
-

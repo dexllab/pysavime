@@ -1,5 +1,5 @@
-from savime.datatype import SavimeSupportedTypes
-from schema.schema import CreatableSavimeElement, DroppableSavimeElement, Literal, Range
+from pysavime.savime.datatype import SavimeSupportedTypes
+from pysavime.schema.schema import CreatableSavimeElement, DroppableSavimeElement, Literal, Range
 
 
 class Dataset(CreatableSavimeElement, DroppableSavimeElement):
@@ -71,7 +71,7 @@ class LiteralDataset(Dataset, CreatableSavimeElement):
         literal: A literal.
     """
 
-    def __init__(self, name: str,  literal: Literal, num_columns: int = 1):
+    def __init__(self, name: str, literal: Literal, num_columns: int = 1):
         super().__init__(name=name, data_type=literal.data_type, num_columns=num_columns)
         self.literal = literal
 

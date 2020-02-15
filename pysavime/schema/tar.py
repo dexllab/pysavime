@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from typing import Sequence, Union
 
-from savime.datatype import SavimeSupportedTypes
-from schema.dataset import Dataset
-from schema.schema import CreatableSavimeElement, IntervalRange, SavimeElement
+from pysavime.savime.datatype import SavimeSupportedTypes
+from pysavime.schema.dataset import Dataset
+from pysavime.schema.schema import CreatableSavimeElement, IntervalRange, SavimeElement
 
 
 class TarMetaType(CreatableSavimeElement):

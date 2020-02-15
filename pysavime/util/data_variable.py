@@ -3,8 +3,8 @@ from collections.abc import Iterable
 import numpy as np
 from typing import Sequence, Tuple, Union
 
-from savime.datatype import SavimeDataTypeUtility
-from misc.decorators import timer_decorator
+from pysavime.savime.datatype import SavimeDataTypeUtility
+from pysavime.misc.decorators import timer_decorator
 
 
 class DataVariable(namedtuple('DataVariableNamedTuple', ['name', 'array', 'is_dimension'])):
@@ -17,8 +17,9 @@ class DataVariable(namedtuple('DataVariableNamedTuple', ['name', 'array', 'is_di
 
     """
 
+    # noinspection PyArgumentList
     def __new__(cls, name: str, array: np.array, is_dimension: bool):
-        assert SavimeDataTypeUtility.is_array_compatible(array),\
+        assert SavimeDataTypeUtility.is_array_compatible(array), \
             'The array data d_type must compatible with Savime data types and its rank must be less than or equal to 2.'
 
         return super().__new__(cls, name, array, is_dimension)
@@ -151,8 +152,10 @@ class DataVariableBlockOps:
             for attr_array_name, attr_array in data_variable_block.attrs.items():
                 attr_arrays_concat[attr_array_name].append(attr_array)
 
-        dim_arrays_concat = OrderedDict({key: np.concatenate(value, axis=0) for key, value in dim_arrays_concat.items()})
-        attr_arrays_concat = OrderedDict({key: np.concatenate(value, axis=0) for key, value in attr_arrays_concat.items()})
+        dim_arrays_concat = OrderedDict(
+            {key: np.concatenate(value, axis=0) for key, value in dim_arrays_concat.items()})
+        attr_arrays_concat = OrderedDict(
+            {key: np.concatenate(value, axis=0) for key, value in attr_arrays_concat.items()})
 
         return DataVariableBlock(dims=dim_arrays_concat, attrs=attr_arrays_concat)
 
@@ -193,11 +196,11 @@ class DataVariableBlockOps:
                         check_arrays((a1, a2))
 
         assert not check_keys(qrb.dims for qrb in data_variable_blocks), 'Data variable blocks must have the same ' \
-                                                                          'dimension names (in the same order).'
+                                                                         'dimension names (in the same order).'
 
         check_arrays_of_arrays(qrb.dims.values() for qrb in data_variable_blocks)
 
         assert not check_keys(qrb.attrs for qrb in data_variable_blocks), 'Data variable blocks must have the same ' \
-                                                                           'attributes (in the same order).'
+                                                                          'attributes (in the same order).'
 
         check_arrays_of_arrays(qrb.attrs.values() for qrb in data_variable_blocks)

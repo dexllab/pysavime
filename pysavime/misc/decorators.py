@@ -1,6 +1,6 @@
 import time
 
-from logging_utility.logger import timer_logger
+from pysavime.logging_utility.logger import timer_logger
 import functools
 
 

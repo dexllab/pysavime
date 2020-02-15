@@ -8,13 +8,13 @@ from posix.stat cimport struct_stat, fstat
 
 from libcpp cimport nullptr
 
-from savime.savime cimport *
+from pysavime.savime.savime cimport *
 
-from logging_utility.logger import client_logger, connection_logger
-from misc.exceptions import ConnectionFailure, QueryHandleFailure, MMapFailed, SavimeSilentError
-from util.data_variable import DataVariable, DataVariableBlock
-import logging_utility.logging_messages as logging_messages
-from misc.decorators import timer_decorator
+from pysavime.logging_utility.logger import client_logger, connection_logger
+from pysavime.misc.exceptions import ConnectionFailure, QueryHandleFailure, MMapFailed, SavimeSilentError
+from pysavime.util.data_variable import DataVariable, DataVariableBlock
+import pysavime.logging_utility.logging_messages as logging_messages
+from pysavime.misc.decorators import timer_decorator
 
 import numpy as np
 

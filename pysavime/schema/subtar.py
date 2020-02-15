@@ -1,10 +1,11 @@
 from abc import abstractmethod
 from typing import Sequence, Union
 
-from savime.datatype import SavimeSupportedTypes
-from schema.dataset import Dataset
-from schema.schema import IndexRange, IntervalRange, LoadableSavimeElement, SavimeElement
-from schema.tar import Tar, TarAttributeSpecification, ImplicitTarDimensionSpecification, TarDimensionSpecification
+from pysavime.savime.datatype import SavimeSupportedTypes
+from pysavime.schema.dataset import Dataset
+from pysavime.schema.schema import IndexRange, IntervalRange, LoadableSavimeElement, SavimeElement
+from pysavime.schema.tar import Tar, TarAttributeSpecification, ImplicitTarDimensionSpecification, \
+    TarDimensionSpecification
 
 
 class SubTarDimensionSpecification(SavimeElement):
@@ -64,7 +65,7 @@ class SpecifiedByDatasetSubTarDimensionSpecification(SubTarDimensionSpecificatio
     def plain_query_str(self) -> str:
         placeholder = '{' + self._type_placeholder_str + '}'
         q = placeholder + f', {self._dimension_name}, {self.index_prefix}{self.index_range.start}, ' \
-            f'{self.index_prefix}{self.index_range.stop}, {self._dataset_name}'
+                          f'{self.index_prefix}{self.index_range.stop}, {self._dataset_name}'
         return q
 
 

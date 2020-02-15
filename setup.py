@@ -1,14 +1,13 @@
 import os
 
-from setuptools import setup
-from setuptools.extension import Extension
+import setuptools.extension
 from Cython.Build import cythonize
 
 SAVIME_INCLUDE_ENV = 'SAVIME_INCLUDE'
 SAVIME_LIB_ENV = 'SAVIME_LIB'
 
 DEFAULT_SAVIME_LIB = '/usr/local/savime/lib'
-DEFAULT_SAVIME_INCLUDE = 'include/'
+DEFAULT_SAVIME_INCLUDE = 'pysavime/include/'
 
 SAVIME_INCLUDE = None
 SAVIME_LIB = None
@@ -27,7 +26,8 @@ def check_savime_install():
         type_ = 'include' if 'include' in environment_variable.lower() else 'lib'
 
         if variable is None:
-            raise Exception(f'You should set the {type_} directory through the environment variable {environment_variable}.')
+            raise Exception(
+                f'You should set the {type_} directory through the environment variable {environment_variable}.')
 
         return variable
 
@@ -37,23 +37,31 @@ def check_savime_install():
 
 check_savime_install()
 
-
 extensions = [
-    Extension('client', ['savime/client.pyx'],
-              include_dirs=[SAVIME_INCLUDE],
-              libraries=['savime'],
-              library_dirs=[SAVIME_LIB],
-              language='c++'),
-    Extension('datatype', ['savime/datatype.pyx'],
-              include_dirs=[SAVIME_INCLUDE],
-              libraries=['savime'],
-              library_dirs=[SAVIME_LIB],
-              language='c++'),
+    setuptools.extension.Extension('client', ['pysavime/savime/client.pyx'],
+                                   include_dirs=[SAVIME_INCLUDE],
+                                   libraries=['savime'],
+                                   library_dirs=[SAVIME_LIB],
+                                   language='c++'),
+    setuptools.extension.Extension('datatype', ['pysavime/savime/datatype.pyx'],
+                                   include_dirs=[SAVIME_INCLUDE],
+                                   libraries=['savime'],
+                                   library_dirs=[SAVIME_LIB],
+                                   language='c++'),
 ]
+with open("README.md", "r") as fh:
+    long_description = fh.read()
 
-setup(ext_modules=cythonize(extensions,
-                            compiler_directives={'language_level': "3"},
-                            build_dir='build'))
+requirements = ['sortedcontainers>=2.1.0', 'Cython>=0.29.14', 'numpy>=1.17.3', 'pandas>=0.25.3', 'xarray>=0.14.1']
+classifiers = ["Programming Language :: Python :: 3", "License :: OSI Approved :: MIT License",
+               "Operating System :: Linux"]
+
+setuptools.setup(name='pysavime', author='Daniel N. R. da Silva', python_requires='>=3.6', version='0.0a',
+                 install_requires=requirements, long_description=long_description,
+                 long_description_content_type="text/markdown",
+                 packages=setuptools.find_packages(),
+                 classifiers=classifiers,
+                 ext_modules=cythonize(extensions, compiler_directives={'language_level': "3"}, build_dir='build'))
 
 
 def find_lib_and_move_to_dir(start_strings, dir_path):
@@ -63,4 +71,4 @@ def find_lib_and_move_to_dir(start_strings, dir_path):
                 os.rename(elem, os.path.join(dir_path, elem))
 
 
-find_lib_and_move_to_dir([extension.name for extension in extensions], 'savime')
+find_lib_and_move_to_dir([extension.name for extension in extensions], 'pysavime/savime')

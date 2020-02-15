@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from savime.datatype import SavimeSupportedTypes
+from pysavime.savime.datatype import SavimeSupportedTypes
 
 
 class ReprMixIn:

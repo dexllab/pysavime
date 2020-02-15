@@ -1,10 +1,9 @@
-from schema.dataset import *
-from schema.subtar import *
-from schema.tar import *
+from pysavime.schema.dataset import *
+from pysavime.schema.subtar import *
+from pysavime.schema.tar import *
 
 
 def _to_savime_supported_type(input_data_type):
-
     if not isinstance(input_data_type, SavimeSupportedTypes):
 
         try:
@@ -61,7 +60,6 @@ def tar_metatype(name: str, dimension_names: Sequence[str], attribute_names: Seq
 
 def tar(name: str, dimensions: Sequence[TarDimensionSpecification],
         attributes: Sequence[TarAttributeSpecification]) -> Tar:
-
     """
 
     :param name: The tar name.
