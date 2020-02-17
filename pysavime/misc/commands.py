@@ -69,7 +69,7 @@ def register_model(model_name: str, model_tar: str, input_attribute: str,
     :return:
     """
     dim_specification_str = '|'.join(f'{dim_name}-{dim_size}' for dim_name, dim_size in dim_specification)
-    query = f'REGISTER_MODEL({model_name}, {model_tar}, {input_attribute}, "{dim_specification_str}");'
+    query = f'REGISTER_MODEL({model_name}, {model_tar}, {input_attribute}, "{dim_specification_str}")'
     return query
 
 
@@ -81,7 +81,7 @@ def predict(tar: str, model_name: str, input_attribute: str):
     :param input_attribute:
     :return:
     """
-    query = f'PREDICT({tar}, {model_name}, {input_attribute});'
+    query = f'PREDICT({tar}, {model_name}, {input_attribute})'
     return query
 
 
@@ -177,14 +177,19 @@ def aggregate(tar, *args):
     :param args:
     :return:
     """
-    no_args = len(args)
-    ix_dims = (no_args // 4) * 3
 
     tar_name = _get_tar_name(tar)
-    arg_data_attr_str = ', '.join(_sequence_to_str(arg_triplet) for arg_triplet in _split_into_n(args[:ix_dims], 3))
-    dim_attr_str = _sequence_to_str(args[ix_dims:])
 
-    query = f'AGGREGATE({tar_name}, {arg_data_attr_str}, {dim_attr_str})'
+    no_args = len(args)
+    if len(args) % 4 == 0:
+        ix_dims = (no_args // 4) * 3
+        dim_attr_str = _sequence_to_str(args[ix_dims:])
+        arg_data_attr_str = ', '.join(_sequence_to_str(arg_triplet) for arg_triplet in _split_into_n(args[:ix_dims], 3))
+        query = f'AGGREGATE({tar_name}, {arg_data_attr_str}, {dim_attr_str})'
+    else:
+        arg_data_attr_str = ', '.join(_sequence_to_str(arg_triplet) for arg_triplet in _split_into_n(args, 3))
+        query = f'AGGREGATE({tar_name}, {arg_data_attr_str})'
+
     return query
 
 
