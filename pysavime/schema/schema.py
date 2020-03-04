@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Sequence
 
 from pysavime.savime.datatype import SavimeSupportedTypes
 
@@ -92,7 +93,7 @@ class Literal(SavimeElement):
 
     __slots__ = ('values', 'data_type')
 
-    def __init__(self, values: list, data_type: SavimeSupportedTypes):
+    def __init__(self, values: Sequence, data_type: SavimeSupportedTypes):
         self.values = values
         self.data_type = data_type
 

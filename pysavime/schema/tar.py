@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from collections import namedtuple
 from typing import Sequence, Union
 
 from pysavime.savime.datatype import SavimeSupportedTypes
@@ -170,6 +171,16 @@ class Tar(CreatableSavimeElement):
         q = f'"{self.name}", "{self.meta_type_query_str}", "{self.dimension_specification_str}", ' \
             f'"{self.attribute_specification_str}"{self.mapping_query_str}'
         return q
+
+    @property
+    def attributes(self):
+        return namedtuple('attribute',
+                          [attr.name for attr in self.attribute_specification])(*self.attribute_specification)
+
+    @property
+    def dimensions(self):
+        return namedtuple('dimensions',
+                          [dim.name for dim in self.dimension_specification])(*self.dimension_specification)
 
     @property
     def dimension_specification_str(self) -> str:
