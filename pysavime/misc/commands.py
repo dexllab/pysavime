@@ -74,13 +74,11 @@ def register_model(model_identifier: str,
                    output_dim_specification:  Sequence[Tuple[Union[TarDimensionSpecification, str], int]],
                    attribute_specification: Sequence[Union[TarAttributeSpecification, str]]) -> str:
     """
-    Get the register model query string for the informed model and its metadata.
+    Get the register model query string for the informed model.
 
     :param model_identifier: The model identifier registered in Savime.
-    :param input_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs. Dimensions stand for
-    the input tar dimension and size the number of elements in that dimension.
-    :param output_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs. Dimensions stand for
-    the tar output dimension and size the number of elements in that dimension.
+    :param input_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs.
+    :param output_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs.
     :param attribute_specification: A sequence of [(a1,...,an)] tar input attributes.
     :return: The register model query.
     """
@@ -97,7 +95,7 @@ def register_model(model_identifier: str,
 
 def predict(tar: Union[Tar, str], model_identifier: str,):
     """
-    Given a registered model, perform a prediction using as input the informed tar.
+    Given a registered model, perform a prediction using the informed tar as input.
 
     :param tar: The input tar.
     :param model_identifier: The model identifier registered in Savime.
