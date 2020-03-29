@@ -69,50 +69,43 @@ def drop(savime_element: DroppableSavimeElement) -> str:
     return savime_element.drop_query_str()
 
 
-def register_model(model_name: str, model_tar: Union[Tar, str], input_attribute: Union[str, TarAttributeSpecification],
-                   dim_specification: Sequence[Tuple[Union[TarDimensionSpecification, str], int]]) -> str:
+def register_model(model_identifier: str,
+                   input_dim_specification: Sequence[Tuple[Union[TarDimensionSpecification, str], int]],
+                   output_dim_specification:  Sequence[Tuple[Union[TarDimensionSpecification, str], int]],
+                   attribute_specification: Sequence[Union[TarAttributeSpecification, str]]) -> str:
     """
     Get the register model query string for the informed model and its metadata.
 
-    :param model_name: The model name which was registered in the model server. It works as an URI.
-    :param model_tar: The tar containing input data for the model.
-    :param input_attribute: The input model attribute. It must be a model_tar attribute.
-    :param dim_specification: The dimension slice specification for the input attribute. It must be a sequence
-    (list or tuple) of pairs (dim, dim_size) such that the first and second pair positions denote the dimension
-    and the number of elements in the dimension respectively. Notice that the dimension must be belong to the model_tar
-    dimensions.
+    :param model_identifier: The model identifier registered in Savime.
+    :param input_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs. Dimensions stand for
+    the input tar dimension and size the number of elements in that dimension.
+    :param output_dim_specification: A sequence [(d1, s1), ..., (dn, sn)] of dimension-size pairs. Dimensions stand for
+    the tar output dimension and size the number of elements in that dimension.
+    :param attribute_specification: A sequence of [(a1,...,an)] tar input attributes.
     :return: The register model query.
     """
 
-    model_tar_name = _get_tar_name(model_tar)
-    input_attribute_name = _get_tar_attribute_name(input_attribute)
-    dims, dim_sizes = zip(*dim_specification)
-    dim_names = [_get_tar_dimension_name(dim) for dim in dims]
+    input_dim_spec_str = '|'.join(f'{_get_tar_dimension_name(dim)}-{dim_size}' for dim, dim_size in
+                                  input_dim_specification)
+    output_dim_spec_str = '|'.join(f'{_get_tar_dimension_name(dim)}-{dim_size}' for dim, dim_size in
+                                   output_dim_specification)
+    attribute_spec_str = ','.join(f'{_get_tar_attribute_name(attr)}' for attr in attribute_specification)
 
-    # If model_tar is a Tar instance, it is possible to do some checks on the client.
-    if isinstance(model_tar, Tar):
-        model_tar_dim_names = {dim.name for dim in model_tar.dimension_specification}
-        model_tar_attribute_names = {attr.name for attr in model_tar.attribute_specification}
-        dim_names_set = set(dim_names)
-        assert dim_names_set.issubset(model_tar_dim_names), 'You have informed at least one dimension absent from the' \
-                                                            ' model_tar.'
-        assert input_attribute_name in model_tar_attribute_names, 'The input attribute you have informed does not ' \
-                                                                  'belong to model_tar.'
-
-    dim_specification_str = '|'.join(f'{dim_name}-{dim_size}' for dim_name, dim_size in zip(dim_names, dim_sizes))
-    query = f'REGISTER_MODEL({model_name}, {model_tar_name}, {input_attribute_name}, "{dim_specification_str}")'
+    query = f'REGISTER_MODEL({model_identifier}, "{input_dim_spec_str}", "{output_dim_spec_str}", "{attribute_spec_str}")'
     return query
 
 
-def predict(tar: str, model_name: str, input_attribute: str):
+def predict(tar: Union[Tar, str], model_identifier: str,):
     """
+    Given a registered model, perform a prediction using as input the informed tar.
 
-    :param tar:
-    :param model_name:
-    :param input_attribute:
-    :return:
+    :param tar: The input tar.
+    :param model_identifier: The model identifier registered in Savime.
+    :return: A predict query string.
     """
-    query = f'PREDICT({tar}, {model_name}, {input_attribute})'
+    tar_name = _get_tar_name(tar)
+
+    query = f'PREDICT({tar_name}, {model_identifier})'
     return query
 
 
