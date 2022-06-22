@@ -1,5 +1,5 @@
 Cython==0.29.14
-numpy==1.17.3
+numpy==1.22.0
 pandas==0.25.3
 sortedcontainers==2.1.0
 xarray==0.14.1
